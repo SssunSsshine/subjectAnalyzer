@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+Главная страница
+{% endblock %}
+
+{% block body %}
+<h1>Главная страница</h1>
+
+<form method="post" class="form-control">
+    <input type="text" name="url" placeholder="Введите URL">
+    <input type="text" name="name" placeholder="Введите название сайта"><br>
+    <button class="btn btn-success" type="submit">Add</button>
+</form>
+{% endblock %}
