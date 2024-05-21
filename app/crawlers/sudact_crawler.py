@@ -10,15 +10,10 @@ class SudactCrawler:
     def __init__(self, driver_manager):
         self.driver_manager = driver_manager
 
-    def get_html(self, url):
+    def crawl(self, url):
         if self.driver_manager.driver is None:
            raise Exception("Драйвер не запущен. Вызовите метод start() перед использованием get_html().")
 
-        self.driver_manager.driver.get(url)
-        self.driver_manager.driver.implicitly_wait(5)
-        return self.driver_manager.driver.page_source
-
-    def crawl(self, url):
         has_next_page = 0
         all_links = []
         while has_next_page < 2:
@@ -38,9 +33,16 @@ class SudactCrawler:
                 has_next_page = 2
         return all_links
 
+    def get_html(self, url):
+        if self.driver_manager.driver is None:
+           raise Exception("Драйвер не запущен. Вызовите метод start() перед использованием get_html().")
+
+        return self.driver_manager.driver.page_source
+
     def get_next_page_link(self, has_next_page, url):
         next_page_element = self.driver_manager.driver.find_element(By.XPATH,
-                                                                    '//div[@class="h-pager-wrap"]//span[@class="page-next"]/a')
+                                                                    '//div[@class="h-pager-wrap"]//span['
+                                                                    '@class="page-next"]/a')
         if next_page_element:
             next_page_url = next_page_element.get_attribute('href')
             if next_page_url:
@@ -74,7 +76,9 @@ if __name__ == "__main__":
     driver_manager.start()
 
     crawler = SudactCrawler(driver_manager)
-    start_url = 'https://sudact.ru/regular/doc/?regular-txt=гусев&regular-case_doc=&regular-lawchunkinfo=&regular-date_from=&regular-date_to=&regular-workflow_stage=&regular-area=&regular-court=&regular-judge=#searchResult'
+    start_url = ('https://sudact.ru/regular/doc/?regular-txt=гусев&regular-case_doc=&regular-lawchunkinfo=&regular'
+                 '-date_from=&regular-date_to=&regular-workflow_stage=&regular-area=&regular-court=&regular-judge'
+                 '=#searchResult')
     all_links = crawler.crawl(start_url)
 
     print("Found links:")
