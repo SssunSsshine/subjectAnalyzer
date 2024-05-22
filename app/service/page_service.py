@@ -1,6 +1,8 @@
 from datetime import datetime
 import logging
 
+from sqlalchemy.exc import IntegrityError
+
 from app.models.page import Page
 from app.repository.page_repository import PageRepository
 
